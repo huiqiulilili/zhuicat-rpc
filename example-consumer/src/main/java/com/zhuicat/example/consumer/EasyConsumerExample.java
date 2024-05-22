@@ -2,6 +2,7 @@ package com.zhuicat.example.consumer;
 
 import com.zhuicat.example.common.model.User;
 import com.zhuicat.example.common.service.UserService;
+import com.zhuicat.zhuirpc.factory.ServiceProxyFactory;
 
 /**
  * 简易服务消费者示例
@@ -12,7 +13,8 @@ import com.zhuicat.example.common.service.UserService;
 public class EasyConsumerExample {
     public static void main(String[] args) {
         // todo 需要获取 UserService 的实现类对象
-        UserService userService = new UserServiceProxy();
+//        UserService userService = new UserServiceProxy();
+        UserService userService = ServiceProxyFactory.getService(UserService.class);
         User user = new User();
         user.setName("zhuicat");
 
