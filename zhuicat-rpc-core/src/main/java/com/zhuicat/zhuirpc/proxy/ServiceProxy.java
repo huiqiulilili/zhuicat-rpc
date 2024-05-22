@@ -7,6 +7,7 @@ import com.zhuicat.zhuirpc.model.RpcRequest;
 import com.zhuicat.zhuirpc.model.RpcResponse;
 import com.zhuicat.zhuirpc.serializer.JdkSerializer;
 import com.zhuicat.zhuirpc.serializer.Serializer;
+import com.zhuicat.zhuirpc.serializer.SerializerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -24,11 +25,13 @@ public class ServiceProxy implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // 指定序列化器
 //        Serializer serializer = new JdkSerializer();
-        Serializer serializer = null;
-        ServiceLoader<Serializer> serviceLoader = ServiceLoader.load(Serializer.class);
-        for (Serializer s : serviceLoader) {
-            serializer = s;
-        }
+//        Serializer serializer = null;
+//        ServiceLoader<Serializer> serviceLoader = ServiceLoader.load(Serializer.class);
+//        for (Serializer s : serviceLoader) {
+//            serializer = s;
+//        }
+
+        Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
         // 发请求
         RpcRequest rpcRequest = RpcRequest.builder()
