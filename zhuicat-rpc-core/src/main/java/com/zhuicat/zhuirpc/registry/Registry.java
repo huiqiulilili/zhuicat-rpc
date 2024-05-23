@@ -3,7 +3,9 @@ package com.zhuicat.zhuirpc.registry;
 import com.zhuicat.zhuirpc.config.RegistryConfig;
 import com.zhuicat.zhuirpc.model.ServiceMetaInfo;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 注册中心
@@ -37,4 +39,8 @@ public interface Registry {
      */
     void destroy();
 
+    /**
+     * 心跳检测（服务端）
+     */
+    void heartBeat();
 }
