@@ -2,8 +2,12 @@ package com.zhuicat.example.provider;
 
 import com.zhuicat.example.common.service.UserService;
 import com.zhuicat.zhuirpc.RpcApplication;
+import com.zhuicat.zhuirpc.config.RegistryConfig;
 import com.zhuicat.zhuirpc.config.RpcConfig;
+import com.zhuicat.zhuirpc.model.ServiceMetaInfo;
 import com.zhuicat.zhuirpc.registry.LocalRegistry;
+import com.zhuicat.zhuirpc.registry.Registry;
+import com.zhuicat.zhuirpc.registry.RegistryFactory;
 import com.zhuicat.zhuirpc.server.HttpServer;
 import com.zhuicat.zhuirpc.server.VertxHttpServer;
 
@@ -20,7 +24,21 @@ public class ProviderExample {
         System.out.println(RpcApplication.getRpcConfig());
 
         // 注册服务
-        LocalRegistry.register(UserService.class.getName(),UserServiceImpl.class);
+        String serviceName = UserService.class.getName();
+        LocalRegistry.register(serviceName, UserServiceImpl.class);
+
+        RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
+        serviceMetaInfo.setServiceName(serviceName);
+        serviceMetaInfo.setServiceHost(rpcConfig.getServerHost());
+        serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
+        try {
+            registry.register(serviceMetaInfo);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         // 提供服务
         HttpServer httpServer = new VertxHttpServer();

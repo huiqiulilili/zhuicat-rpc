@@ -1,6 +1,5 @@
 package com.zhuicat.zhuirpc.config;
 
-import com.zhuicat.zhuirpc.serializer.Serializer;
 import com.zhuicat.zhuirpc.serializer.SerializerKeys;
 import lombok.Data;
 
@@ -41,4 +40,9 @@ public class RpcConfig {
      * 序列化器
      */
     private String serializer = SerializerKeys.JDK;
+
+    /**
+     * 注册中心配置
+     */
+    private RegistryConfig registryConfig = new RegistryConfig();
 }

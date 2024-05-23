@@ -1,7 +1,10 @@
 package com.zhuicat.zhuirpc;
 
+import com.zhuicat.zhuirpc.config.RegistryConfig;
 import com.zhuicat.zhuirpc.config.RpcConfig;
 import com.zhuicat.zhuirpc.constant.RpcConstant;
+import com.zhuicat.zhuirpc.registry.Registry;
+import com.zhuicat.zhuirpc.registry.RegistryFactory;
 import com.zhuicat.zhuirpc.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +25,12 @@ public class RpcApplication {
     public static void init(RpcConfig newRpcConfig) {
         rpcConfig = newRpcConfig;
         log.info("rpc init,config = {}", newRpcConfig.toString());
+
+        // 注册中心初始化
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        registry.init(registryConfig);
+        log.info("registry init，config = {}", registryConfig.toString());
     }
 
     /**
